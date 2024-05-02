@@ -1,8 +1,15 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import DishCategory, Dish, Gallery
 from .forms import ReservationForm
 from django.views.generic import TemplateView
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
+def is_manager(user):
+    return user.groups.filter(name='manager').exists()
 
 
 class IndexView(TemplateView):
@@ -30,5 +37,7 @@ class IndexView(TemplateView):
             return redirect('main:index')
 
 
+@login_required(login_url='/login/')
+@user_passes_test(is_manager)
 def manager(request):
-    ...
+    return HttpResponse('Manager page')
