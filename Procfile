@@ -1,0 +1,1 @@
+web: gunicorn yummy_april.wsgi --log-file - --log-level debug
